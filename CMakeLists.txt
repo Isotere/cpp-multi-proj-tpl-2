@@ -1,9 +1,14 @@
-cmake_minimum_required(VERSION 3.31)
+cmake_minimum_required(VERSION 4.0)
 
-set(_PATCH_VERSION "1" CACHE INTERNAL "Patch version")
-set(PROJECT_VERSION 0.1.${_PATCH_VERSION})
+set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
+set(PROJECT_VERSION 0.0.${PATCH_VERSION})
 
-project(project_name VERSION 0.0.${_PATCH_VERSION})
+project(project_name VERSION 0.0.${PATCH_VERSION})
+
+set(BOOST_ROOT /opt/homebrew/opt/boost)
+find_package(Boost CONFIG REQUIRED)
+
+option(WITH_BOOST_TEST "Whether to build Boost test" ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -21,8 +26,22 @@ set(CMAKE_CXX_FLAGS ${CompilerFlags} -stdlib=libc++)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
 
+include_directories(libs)
+include_directories(${Boost_INCLUDE_DIR})
+
 # FetchContent added in CMake 3.11, downloads during the configure step
 include(FetchContent)
+
+set(CPACK_GENERATOR DEB)
+set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
+set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
+set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
+set(CPACK_PACKAGE_CONTACT example@example.com)
+include(CPack)
+
+if (WITH_BOOST_TEST)
+    enable_testing()
+endif ()
 
 add_subdirectory(src/hello_world)
 
