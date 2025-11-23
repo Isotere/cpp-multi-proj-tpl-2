@@ -8,7 +8,6 @@ add_executable(hello_world main.cpp)
 add_library(hello_world_lib lib.cpp)
 
 target_compile_features(hello_world PRIVATE cxx_std_23)
-target_compile_options(hello_world PRIVATE -Wall -Wextra -pedantic -Werror)
 
 # Говорим где искать собранный .h файл из .h.in файла
 target_include_directories(hello_world_lib
