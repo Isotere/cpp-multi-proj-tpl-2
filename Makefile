@@ -136,7 +136,7 @@ ifeq ($(TARGET),)
 endif
 	@mkdir -p $(SRC_DIR)/$(TARGET)
 	@echo '#include <iostream>' > $(SRC_DIR)/$(TARGET)/main.cpp
-	@echo ''  > $(SRC_DIR)/$(TARGET)/main.cpp
+	@echo ''  >> $(SRC_DIR)/$(TARGET)/main.cpp
 	@echo 'int main() {' >> $(SRC_DIR)/$(TARGET)/main.cpp
 	@echo '    std::cout << "Hello from $(TARGET)\n";' >> $(SRC_DIR)/$(TARGET)/main.cpp
 	@echo '    return 0;' >> $(SRC_DIR)/$(TARGET)/main.cpp
