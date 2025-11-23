@@ -64,6 +64,23 @@ build:
 .PHONY: rebuild
 rebuild: clean build
 
+# ------------------------------------------------------------------------
+# 🎯 Сборка ОДНОЙ цели
+# ------------------------------------------------------------------------
+$(TARGET):
+ifeq ($(TARGET_EXISTS),0)
+	$(error ❌ Цель '$(TARGET)' не найдена. Проверь: $(SRC_DIR)/$(TARGET)/)
+endif
+	@echo "🔧 Собираю $(TARGET)..."
+	@$(CMAKE_TARGET) >/dev/null
+	@cmake --build $(BUILD_DIR) --target $(TARGET) -- -j$(shell sysctl -n hw.logicalcpu 2>/dev/null || nproc)
+	@$(MAKE) link-cc
+	@echo "✅ $(TARGET) собран. Запуск:"
+	@./bin/$(TARGET)
+
+.PHONY: rebuild-target
+rebuild-target: clean-target $(TARGET)
+
 .PHONY: clean
 clean:
 	@echo "🧹 Полная очистка build/"
